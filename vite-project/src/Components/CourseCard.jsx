@@ -1,29 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-export const courseImages = [
-  "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1605745341112-85968b19335b?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1618477247222-ac59124c6282?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1626785774573-4b799314346d?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1543286386-713df548e9cc?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1629904853716-6c2981096325?auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1533750516457-a7f992034fec?auto=format&fit=crop&w=800&q=80",
-];
-
 const CourseCard = ({ courseData }) => {
   const {
     id,
@@ -31,7 +8,6 @@ const CourseCard = ({ courseData }) => {
     instructor,
     price,
     rating,
-
     category,
     bestseller,
     studentsEnrolled,
@@ -42,77 +18,75 @@ const CourseCard = ({ courseData }) => {
   return (
     <Link
       to={`/course/${id}`}
-      className="group flex flex-col bg-white rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300 h-full"
+      className="group relative flex flex-col bg-white rounded-[2rem] overflow-hidden border border-gray-100 hover:border-indigo-100 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(79,70,229,0.1)] h-full"
     >
+      {/* Badge Overlay */}
+      {bestseller && (
+        <div className="absolute top-4 right-4 z-10">
+          <span className="bg-orange-500 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full shadow-lg shadow-orange-200">
+            Top Choice
+          </span>
+        </div>
+      )}
+
       {/* Image Container */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-60 overflow-hidden">
         <img
-          onError={() => {
-            const randomIdx = Math.floor(Math.random() * 10);
-            setImg(courseImages[randomIdx]);
-          }}
           src={img}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-1 transition-transform duration-700"
         />
-        {bestseller && (
-          <span className="absolute top-2 left-2 bg-yellow-400 text-xs font-bold px-2 py-1 rounded text-gray-900 shadow-sm">
-            Bestseller
-          </span>
-        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+          <p className="text-white/80 text-xs font-semibold mb-1">Last Updated 2026</p>
+          <div className="flex gap-2">
+            <span className="px-2 py-1 bg-white/20 backdrop-blur-md rounded text-[10px] text-white font-bold">12+ Modules</span>
+            <span className="px-2 py-1 bg-white/20 backdrop-blur-md rounded text-[10px] text-white font-bold">Lifetime Access</span>
+          </div>
+        </div>
       </div>
 
       {/* Content Container */}
-      <div className="flex flex-col flex-grow p-4">
-        {/* Category */}
-        <p className="text-xs font-medium text-indigo-600 mb-1">{category}</p>
+      <div className="flex flex-col flex-grow p-7">
+        {/* Category & Meta */}
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-[10px] font-black text-indigo-600 uppercase tracking-tighter bg-indigo-50 px-2 py-1 rounded-md">
+            {category}
+          </span>
+          <div className="flex items-center text-xs font-bold text-gray-400">
+            <svg className="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+            </svg>
+            {(studentsEnrolled / 1000).toFixed(1)}k
+          </div>
+        </div>
 
         {/* Title */}
-        <h3 className="text-lg font-bold text-gray-900 leading-snug mb-1 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+        <h3 className="text-xl font-black text-gray-900 leading-tight mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
           {title}
         </h3>
 
         {/* Instructor */}
-        <p className="text-sm text-gray-500 mb-2">{instructor}</p>
+        <p className="text-sm font-semibold text-gray-400 mb-5 flex items-center">
+          By <span className="text-gray-600 ml-1">{instructor}</span>
+        </p>
 
-        {/* Rating Section */}
-        <div className="flex items-center mb-2">
-          <span className="text-yellow-500 font-bold text-sm mr-1">
-            {rating}
-          </span>
-          <div className="flex text-yellow-500 text-sm">
-            {/* Simple SVG Star */}
-            {[...Array(5)].map((_, i) => (
-              <svg
-                key={i}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill={i < Math.floor(rating) ? "currentColor" : "none"}
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="w-4 h-4"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.53.044.75.616.384.973l-4.204 4.091a.563.563 0 00-.172.527l1.285 5.386a.562.562 0 01-.811.85l-4.664-2.833a.562.562 0 00-.594 0l-4.664 2.833a.562.562 0 01-.81-.85l1.285-5.386a.562.562 0 00-.172-.527L2.473 10.37c-.366-.357-.146-.93.384-.973l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
-                />
-              </svg>
-            ))}
+        {/* Footer: Rating and Price */}
+        <div className="mt-auto flex items-center justify-between pt-5 border-t border-gray-50">
+          <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-lg">
+            <span className="text-yellow-600 font-black text-xs mr-1">{rating}</span>
+            <svg className="w-3 h-3 text-yellow-500 fill-current" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
           </div>
-          <span className="text-xs text-gray-400 ml-2">
-            ({(studentsEnrolled / 1000).toFixed(1)}k)
-          </span>
-        </div>
-
-        {/* Price & Spacer to push price to bottom */}
-        <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between">
-          <span className="text-xl font-bold text-gray-900">${price}</span>
-          <button className="text-sm font-medium text-indigo-600 hover:text-indigo-800">
-            View Details
-          </button>
+          <div className="flex flex-col items-end">
+            <span className="text-2xl font-black text-gray-900 tracking-tighter">₹{price}</span>
+            <span className="text-[10px] font-bold text-gray-400 line-through">₹{Math.floor(price * 1.4)}</span>
+          </div>
         </div>
       </div>
+      
+      {/* Decorative Gradient Line (Bottom) */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity" />
     </Link>
   );
 };

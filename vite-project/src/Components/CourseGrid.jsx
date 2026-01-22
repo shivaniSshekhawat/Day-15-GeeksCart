@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFetchCourseData } from "../hooks";
 import CourseCard from "./CourseCard";
 
 const CourseGrid = () => {
   const courseData = useFetchCourseData();
+  const [activeCategory, setActiveCategory] = useState("All");
   
   if (!courseData) return <div className="text-center p-20 text-indigo-600 font-bold animate-pulse text-xl">Loading Excellence...</div>;
+
+  const filteredCourses = activeCategory === "All" 
+    ? courseData 
+    : courseData.filter(course => course.category === activeCategory);
 
   return (
     <div className="bg-[#fcfdff] min-h-screen pb-20">
@@ -23,7 +28,7 @@ const CourseGrid = () => {
               </span>
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Curated courses from India's top industry veterans. Dive into localized content designed for the global tech landscape.
+              Curated courses from top industry veterans. Dive into localized content designed for the global tech landscape.
             </p>
           </div>
         </div>
@@ -38,7 +43,15 @@ const CourseGrid = () => {
           </div>
           <div className="flex flex-wrap gap-2">
             {["All", ...new Set(courseData.map(c => c.category))].map((cat) => (
-              <button key={cat} className="px-5 py-2 rounded-2xl text-xs font-black uppercase tracking-widest border border-gray-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all text-gray-500 hover:text-indigo-600 bg-white shadow-sm hover:shadow-indigo-100">
+              <button 
+                key={cat} 
+                onClick={() => setActiveCategory(cat)}
+                className={`px-5 py-2 rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-sm ${
+                  activeCategory === cat 
+                  ? "bg-indigo-600 text-white border-indigo-600 shadow-indigo-200" 
+                  : "bg-white text-gray-500 border-gray-100 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600"
+                } border`}
+              >
                 {cat}
               </button>
             ))}
@@ -47,10 +60,16 @@ const CourseGrid = () => {
 
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
-          {courseData.map((dataObj) => (
+          {filteredCourses.map((dataObj) => (
             <CourseCard key={dataObj.id} courseData={dataObj} />
           ))}
         </div>
+        
+        {filteredCourses.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-gray-400 font-bold uppercase tracking-widest">No courses found in this category.</p>
+          </div>
+        )}
       </div>
     </div>
   );
